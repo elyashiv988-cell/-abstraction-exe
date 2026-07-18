@@ -107,10 +107,7 @@ class BrokenDelivery(DeliveryMethod):
 
 delivery_service = BrokenDelivery()
 print("(after fix) No error.")
-    
 
-
-   
 # 6 
 
 class DeliveryFee:
@@ -143,12 +140,16 @@ class DeliveryMethod(ABC):
         pass
 
 class WalkingDelivery(DeliveryMethod):
+    def __init__(self):
+        self.name = "WalkingDelivery"
     def deliver(self, order_id):
         print(f"Order {order_id} delivered by walking.")
     def get_eta(self):
         return 60
 
 class ExpressDelivery(DeliveryMethod):
+    def __init__(self):
+        self.name = "ExpressDelivery"
     def deliver(self, order_id):
         print(f"Order {order_id} delivered by express.")
     def get_eta(self):
@@ -163,6 +164,33 @@ class DeliveryHelper:
 
 walker = WalkingDelivery()
 express = ExpressDelivery()
-
 faster_delivery = DeliveryHelper.faster(walker, express)
-print(f"Faster option: {faster_delivery.__class__.__name__}")
+print(f"Faster option: {faster_delivery.name}")
+
+# 8 
+
+class Notifier(ABC):
+    @abstractmethod
+    def send(self, recipient, message):
+        pass
+
+class PushNotifier(Notifier):
+    def send(self, recipient, message):
+        print(f"Push to {recipient}: {message}")
+
+class WhatsAppNotifier(Notifier):
+    def send(self, recipient, message):
+        print(f"WhatsApp to {recipient}: {message}")
+
+class InAppNotifier(Notifier):
+    def send(self, recipient, message):
+        print(f"In-app banner for {recipient}: {message}")
+
+n1 =PushNotifier()
+n2 =WhatsAppNotifier()
+n3= InAppNotifier()
+
+notifiers = [n1, n2, n3]
+
+for n in notifiers:
+    n.send("customer_42", "Your order is on the way!")
